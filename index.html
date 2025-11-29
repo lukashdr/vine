@@ -69,6 +69,22 @@
     font-size: 1.1em;
   }
   
+  .search-box {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .search-box:focus {
+    outline: none;
+    border-color: #8a1538;
+    box-shadow: 0 0 0 3px rgba(138, 21, 56, 0.1);
+  }
+  
   select { 
     width: 100%; 
     padding: 15px;
@@ -96,11 +112,11 @@
   /* Стили для множественного выбора */
   #grape {
     height: 250px;
-    background-image: none; /* Убираем стрелку для multiple select */
+    background-image: none;
   }
   
   #grape option {
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -115,10 +131,22 @@
     color: white;
   }
   
+  .search-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
   .selected-count {
     color: #8a1538;
     font-weight: 600;
-    margin-top: 5px;
+    font-size: 0.9em;
+  }
+  
+  .total-count {
+    color: #666;
+    font-size: 0.9em;
   }
   
   .tooltip { 
@@ -286,104 +314,224 @@
   <!-- Выбор сорта -->
   <div class="form-group">
     <label>Сорт винограда (выберите один или несколько):</label>
-    <select id="grape" multiple size="10">
-      <option value="Aglianico|5">Aglianico — 5</option>
-      <option value="Airén|1">Airén — 1</option>
-      <option value="Albariño|1">Albariño — 1</option>
-      <option value="Aligoté|1">Aligoté — 1</option>
-      <option value="Alvarelhão|3">Alvarelhão — 3</option>
-      <option value="Aragonez|3">Aragonez / Tinta Roriz — 3</option>
-      <option value="Assyrtiko|2">Assyrtiko — 2</option>
-      <option value="AxR|2">AxR — 2</option>
-      <option value="Barbera|4">Barbera — 4</option>
-      <option value="Blaufränkisch|3">Blaufränkisch — 3</option>
-      <option value="Bobal|3">Bobal — 3</option>
-      <option value="Bobal blanco|1">Bobal blanco — 1</option>
-      <option value="Bonarda|3">Bonarda — 3</option>
-      <option value="Cabernet Franc|3">Cabernet Franc — 3</option>
-      <option value="Cabernet Sauvignon|4">Cabernet Sauvignon — 4</option>
-      <option value="Carignan|4">Carignan / Carignan noir / Cariñena — 4</option>
-      <option value="Cesanese|3">Cesanese — 3</option>
-      <option value="Chardonnay|2">Chardonnay — 2</option>
-      <option value="Chenin Blanc|2">Chenin Blanc — 2</option>
-      <option value="Cinsault|3">Cinsault — 3</option>
-      <option value="Clairette|2">Clairette — 2</option>
-      <option value="Colombana Nera|3">Colombana Nera — 3</option>
-      <option value="Colombard|1">Colombard — 1</option>
-      <option value="Corvina|4">Corvina — 4</option>
-      <option value="Counoise|3">Counoise — 3</option>
-      <option value="Debina|1">Debina — 1</option>
-      <option value="Dolcetto|3">Dolcetto — 3</option>
-      <option value="Durif|4">Durif / Petite Sirah — 4</option>
-      <option value="Falanghina|2">Falanghina — 2</option>
-      <option value="Fetească Albă|1">Fetească Albă — 1</option>
-      <option value="Fetească Neagră|3">Fetească Neagră — 3</option>
-      <option value="Fiano|2">Fiano — 2</option>
-      <option value="Fiano di Avellino|2">Fiano di Avellino — 2</option>
-      <option value="Frappato|3">Frappato — 3</option>
-      <option value="Gaglioppo|3">Gaglioppo — 3</option>
-      <option value="Gamay|1">Gamay — 1</option>
-      <option value="Gamay noir|1">Gamay noir — 1</option>
-      <option value="Garnacha|3">Garnacha / Grenache — 3</option>
-      <option value="Gewürztraminer|2">Gewürztraminer — 2</option>
-      <option value="Glera|1">Glera — 1</option>
-      <option value="Grignolino|3">Grignolino — 3</option>
-      <option value="Grüner Veltliner|2">Grüner Veltliner — 2</option>
-      <option value="Malbec|4">Malbec — 4</option>
-      <option value="Marselan|3">Marselan — 3</option>
-      <option value="Mavrodaphne|3">Mavrodaphne — 3</option>
-      <option value="Mavrotragano|4">Mavrotragano — 4</option>
-      <option value="Mencia|3">Mencia — 3</option>
-      <option value="Merlot|3">Merlot — 3</option>
-      <option value="Monica|3">Monica — 3</option>
-      <option value="Montepulciano|3">Montepulciano — 3</option>
-      <option value="Mourvèdre|5">Mourvèdre / Monastrell — 5</option>
-      <option value="Moscatel|1">Moscatel / Muscat — 1</option>
+    <input type="text" id="searchGrape" class="search-box" placeholder="🔍 Поиск сорта винограда..." onkeyup="filterGrapes()">
+    <div class="search-info">
+      <div class="selected-count" id="selectedCount">Выбрано: 0</div>
+      <div class="total-count" id="totalCount">Всего: 0</div>
+    </div>
+    <select id="grape" multiple size="12">
+      <!-- НЕМЕЦКИЕ/АВСТРИЙСКИЕ -->
+      <option value="Riesling|1">Riesling — 1</option>
       <option value="Müller-Thurgau|1">Müller-Thurgau — 1</option>
-      <option value="Nebbiolo|5">Nebbiolo — 5</option>
-      <option value="Nero d'Avola|4">Nero d'Avola — 4</option>
-      <option value="Nielluccio|3">Nielluccio — 3</option>
-      <option value="Nosiola|1">Nosiola — 1</option>
-      <option value="Palomino Fino|1">Palomino Fino — 1</option>
-      <option value="Petit Manseng|2">Petit Manseng — 2</option>
-      <option value="Petit Rouge|3">Petit Rouge — 3</option>
-      <option value="Petit Verdot|4">Petit Verdot — 4</option>
-      <option value="Petite Arvine|1">Petite Arvine — 1</option>
-      <option value="Pinot Blanc|1">Pinot Blanc — 1</option>
-      <option value="Pinot Gris|1">Pinot Gris / Pinot Grigio — 1</option>
+      <option value="Silvaner|1">Silvaner — 1</option>
+      <option value="Gewürztraminer|2">Gewürztraminer — 2</option>
+      <option value="Grüner Veltliner|2">Grüner Veltliner — 2</option>
+      <option value="Blaufränkisch|3">Blaufränkisch — 3</option>
+      <option value="Zweigelt|3">Zweigelt — 3</option>
+      <option value="Trollinger|2">Trollinger — 2</option>
+      <option value="Kerner|2">Kerner — 2</option>
+      <option value="Bacchus|1">Bacchus — 1</option>
+      <option value="Ortega|1">Ortega — 1</option>
+      <option value="Dornfelder|3">Dornfelder — 3</option>
+      <option value="Rotgipfler|2">Rotgipfler — 2</option>
+      <option value="Zierfandler|2">Zierfandler — 2</option>
+      <option value="St. Laurent|3">St. Laurent — 3</option>
+
+      <!-- ФРАНЦУЗСКИЕ -->
       <option value="Pinot Noir|1">Pinot Noir — 1</option>
-      <option value="Primitivo|4">Primitivo / Zinfandel — 4</option>
-      <option value="Rara Neagră|3">Rara Neagră — 3</option>
-      <option value="Rkatsiteli|1">Rkatsiteli — 1</option>
-      <option value="Roditis|1">Roditis — 1</option>
-      <option value="Roussanne|2">Roussanne — 2</option>
-      <option value="Sagrantino|5">Sagrantino — 5</option>
-      <option value="Sangiovese|3">Sangiovese — 3</option>
+      <option value="Gamay|1">Gamay — 1</option>
+      <option value="Cabernet Franc|3">Cabernet Franc — 3</option>
+      <option value="Merlot|3">Merlot — 3</option>
+      <option value="Syrah|4">Syrah — 4</option>
+      <option value="Grenache|3">Grenache — 3</option>
+      <option value="Mourvèdre|5">Mourvèdre — 5</option>
+      <option value="Carignan|4">Carignan — 4</option>
+      <option value="Cinsault|3">Cinsault — 3</option>
+      <option value="Malbec|4">Malbec — 4</option>
+      <option value="Cabernet Sauvignon|4">Cabernet Sauvignon — 4</option>
+      <option value="Pinot Gris|1">Pinot Gris — 1</option>
+      <option value="Chardonnay|2">Chardonnay — 2</option>
       <option value="Sauvignon Blanc|1">Sauvignon Blanc — 1</option>
       <option value="Sémillon|2">Sémillon — 2</option>
-      <option value="Shiraz|4">Shiraz / Syrah — 4</option>
-      <option value="Silvaner|1">Silvaner (Sylvaner) — 1</option>
-      <option value="Tannat|4">Tannat — 4</option>
-      <option value="Tempranillo|3">Tempranillo — 3</option>
-      <option value="Touriga Nacional|4">Touriga Nacional — 4</option>
-      <option value="Trebbiano|1">Trebbiano — 1</option>
-      <option value="Trebbiano Toscano|1">Trebbiano Toscano — 1</option>
-      <option value="Ugni Blanc|1">Ugni Blanc — 1</option>
-      <option value="Verdejo|2">Verdejo — 2</option>
-      <option value="Verdelho|2">Verdelho — 2</option>
-      <option value="Verduzzo|2">Verduzzo — 2</option>
-      <option value="Vermentino|2">Vermentino — 2</option>
       <option value="Viognier|2">Viognier — 2</option>
-      <option value="Viura|2">Viura / Macabeo — 2</option>
-      <option value="Vinhão|4">Vinhão — 4</option>
+      <option value="Marsanne|2">Marsanne — 2</option>
+      <option value="Roussanne|2">Roussanne — 2</option>
+      <option value="Chenin Blanc|2">Chenin Blanc — 2</option>
+      <option value="Muscat|1">Muscat — 1</option>
+      <option value="Picpoul|1">Picpoul — 1</option>
+      <option value="Ugni Blanc|1">Ugni Blanc — 1</option>
+      <option value="Clairette|2">Clairette — 2</option>
+      <option value="Bourboulenc|2">Bourboulenc — 2</option>
+      <option value="Alicante Bouschet|4">Alicante Bouschet — 4</option>
+      <option value="Petit Manseng|2">Petit Manseng — 2</option>
+      <option value="Gros Manseng|2">Gros Manseng — 2</option>
+      <option value="Mauzac|2">Mauzac — 2</option>
+      <option value="Tannat|4">Tannat — 4</option>
+
+      <!-- ИТАЛЬЯНСКИЕ -->
+      <option value="Sangiovese|3">Sangiovese — 3</option>
+      <option value="Nebbiolo|5">Nebbiolo — 5</option>
+      <option value="Barbera|4">Barbera — 4</option>
+      <option value="Dolcetto|3">Dolcetto — 3</option>
+      <option value="Montepulciano|3">Montepulciano — 3</option>
+      <option value="Primitivo|4">Primitivo — 4</option>
+      <option value="Negroamaro|4">Negroamaro — 4</option>
+      <option value="Nero d'Avola|4">Nero d'Avola — 4</option>
+      <option value="Aglianico|5">Aglianico — 5</option>
+      <option value="Corvina|4">Corvina — 4</option>
+      <option value="Garganega|2">Garganega — 2</option>
+      <option value="Trebbiano|1">Trebbiano — 1</option>
+      <option value="Vermentino|2">Vermentino — 2</option>
+      <option value="Fiano|2">Fiano — 2</option>
+      <option value="Falanghina|2">Falanghina — 2</option>
+      <option value="Greco|2">Greco — 2</option>
+      <option value="Lambrusco|2">Lambrusco — 2</option>
+      <option value="Glera|1">Glera — 1 (Prosecco)</option>
+      <option value="Pinot Grigio|1">Pinot Grigio — 1</option>
+      <option value="Lagrein|4">Lagrein — 4</option>
+      <option value="Schiava|2">Schiava — 2</option>
+      <option value="Teroldego|3">Teroldego — 3</option>
+      <option value="Refosco|3">Refosco — 3</option>
+      <option value="Pignolo|4">Pignolo — 4</option>
+      <option value="Ribolla Gialla|1">Ribolla Gialla — 1</option>
+      <option value="Cataratto|1">Cataratto — 1</option>
+      <option value="Inzolia|1">Inzolia — 1</option>
+      <option value="Frappato|3">Frappato — 3</option>
+      <option value="Nerello Mascalese|3">Nerello Mascalese — 3</option>
+      <option value="Carricante|2">Carricante — 2</option>
+
+      <!-- ИСПАНСКИЕ -->
+      <option value="Tempranillo|3">Tempranillo — 3</option>
+      <option value="Garnacha|3">Garnacha — 3</option>
+      <option value="Monastrell|5">Monastrell — 5</option>
+      <option value="Bobal|3">Bobal — 3</option>
+      <option value="Graciano|4">Graciano — 4</option>
+      <option value="Mencía|3">Mencía — 3</option>
+      <option value="Albariño|1">Albariño — 1</option>
+      <option value="Verdejo|2">Verdejo — 2</option>
+      <option value="Godello|2">Godello — 2</option>
       <option value="Xarel-lo|2">Xarel-lo — 2</option>
-      <option value="Zibibbo|1">Zibibbo — 1</option>
-      <option value="Zweigelt|3">Zweigelt — 3</option>
+      <option value="Macabeo|2">Macabeo — 2</option>
+      <option value="Parellada|1">Parellada — 1</option>
+      <option value="Airén|1">Airén — 1</option>
+      <option value="Palomino|1">Palomino — 1</option>
+      <option value="Prieto Picudo|3">Prieto Picudo — 3</option>
+      <option value="Juan García|3">Juan García — 3</option>
+      <option value="Listán Negro|3">Listán Negro — 3</option>
+      <option value="Listán Blanco|1">Listán Blanco — 1</option>
+      <option value="Cayetana|1">Cayetana — 1</option>
+      <option value="Mazuelo|4">Mazuelo — 4</option>
+
+      <!-- ПОРТУГАЛЬСКИЕ -->
+      <option value="Touriga Nacional|4">Touriga Nacional — 4</option>
+      <option value="Touriga Franca|3">Touriga Franca — 3</option>
+      <option value="Tinta Roriz|3">Tinta Roriz — 3</option>
+      <option value="Alfrocheiro|3">Alfrocheiro — 3</option>
+      <option value="Baga|4">Baga — 4</option>
+      <option value="Castelão|3">Castelão — 3</option>
+      <option value="Trincadeira|3">Trincadeira — 3</option>
+      <option value="Arinto|1">Arinto — 1</option>
+      <option value="Alvarinho|1">Alvarinho — 1</option>
+      <option value="Loureiro|1">Loureiro — 1</option>
+      <option value="Encruzado|2">Encruzado — 2</option>
+      <option value="Jaen|3">Jaen — 3</option>
+      <option value="Rufete|2">Rufete — 2</option>
+      <option value="Bical|1">Bical — 1</option>
+      <option value="Fernão Pires|1">Fernão Pires — 1</option>
+      <option value="Vital|1">Vital — 1</option>
+
+      <!-- ГРУЗИНСКИЕ/АБХАЗСКИЕ -->
+      <option value="Rkatsiteli|1">Rkatsiteli — 1</option>
+      <option value="Saperavi|4">Saperavi — 4</option>
+      <option value="Mtsvane|2">Mtsvane — 2</option>
+      <option value="Kisi|2">Kisi — 2</option>
+      <option value="Chinuri|1">Chinuri — 1</option>
+      <option value="Krakhuna|2">Krakhuna — 2</option>
+      <option value="Tsolikouri|1">Tsolikouri — 1</option>
+      <option value="Tsitska|1">Tsitska — 1</option>
+      <option value="Aleksandrouli|3">Aleksandrouli — 3</option>
+      <option value="Ojaleshi|3">Ojaleshi — 3</option>
+      <option value="Usakhelouri|4">Usakhelouri — 4</option>
+      <option value="Tavkveri|2">Tavkveri — 2</option>
+      <option value="Goruli Mtsvane|2">Goruli Mtsvane — 2</option>
+      <option value="Chkhaveri|1">Chkhaveri — 1</option>
+
+      <!-- РОССИЙСКИЕ/КРЫМСКИЕ -->
+      <option value="Krasnostop|3">Krasnostop — 3</option>
+      <option value="Sibirkovy|2">Sibirkovy — 2</option>
+      <option value="Tsimlyansky|3">Tsimlyansky — 3</option>
+      <option value="Pukhlyakovsky|2">Pukhlyakovsky — 2</option>
+      <option value="Dostoyny|3">Dostoyny — 3</option>
+      <option value="Viorica|1">Viorica — 1</option>
+      <option value="Aligote|1">Aligote — 1</option>
+      <option value="Cabernet|4">Cabernet — 4</option>
+      <option value="Bastardo|3">Bastardo — 3</option>
+      <option value="Цитронный Магарача|1">Цитронный Магарача — 1</option>
+      <option value="Первенец Магарача|2">Первенец Магарача — 2</option>
+      <option value="Ранний Магарача|2">Ранний Магарача — 2</option>
+      <option value="Мускат одесский|1">Мускат одесский — 1</option>
+      <option value="Подарок Магарача|3">Подарок Магарача — 3</option>
+
+      <!-- ВОСТОЧНОЕВРОПЕЙСКИЕ -->
+      <option value="Fetească Albă|1">Fetească Albă — 1</option>
+      <option value="Fetească Regală|1">Fetească Regală — 1</option>
+      <option value="Fetească Neagră|3">Fetească Neagră — 3</option>
+      <option value="Kadarka|3">Kadarka — 3</option>
+      <option value="Kékfrankos|3">Kékfrankos — 3</option>
+      <option value="Irsai Olivér|1">Irsai Olivér — 1</option>
+      <option value="Plavac Mali|4">Plavac Mali — 4</option>
+      <option value="Pošip|2">Pošip — 2</option>
+      <option value="Vranac|4">Vranac — 4</option>
+
+      <!-- АРМЯНСКИЕ -->
+      <option value="Areni|3">Areni — 3</option>
+      <option value="Voskehat|2">Voskehat — 2</option>
+      <option value="Kangun|3">Kangun — 3</option>
+
+      <!-- ЮЖНОАФРИКАНСКИЕ -->
+      <option value="Pinotage|4">Pinotage — 4</option>
+      <option value="Cinsaut|3">Cinsaut — 3</option>
+      <option value="Colombard|1">Colombard — 1</option>
+
+      <!-- АМЕРИКАНСКИЕ -->
+      <option value="Zinfandel|4">Zinfandel — 4</option>
+      <option value="Petite Sirah|4">Petite Sirah — 4</option>
+      <option value="Concord|2">Concord — 2</option>
+      <option value="Catawba|2">Catawba — 2</option>
+
+      <!-- АВСТРАЛИЙСКИЕ -->
+      <option value="Shiraz|4">Shiraz — 4</option>
+      <option value="Durif|4">Durif — 4</option>
+
+      <!-- ЧИЛИЙСКИЕ/АРГЕНТИНСКИЕ -->
+      <option value="Carménère|3">Carménère — 3</option>
+      <option value="País|2">País — 2</option>
+      <option value="Torrontés|2">Torrontés — 2</option>
+
+      <!-- МЕЖДУНАРОДНЫЕ ГИБРИДЫ -->
+      <option value="Regent|3">Regent — 3</option>
+      <option value="Rondo|3">Rondo — 3</option>
+      <option value="Solaris|1">Solaris — 1</option>
+      <option value="Phoenix|1">Phoenix — 1</option>
+      <option value="Bronner|1">Bronner — 1</option>
+
+      <!-- ДЕСЕРТНЫЕ/ФОРТИФИЦИРОВАННЫЕ -->
+      <option value="Pedro Ximénez|1">Pedro Ximénez — 1</option>
+      <option value="Palomino Fino|1">Palomino Fino — 1</option>
+      <option value="Moscatel de Alejandría|1">Moscatel de Alejandría — 1</option>
+      <option value="Malvasia|2">Malvasia — 2</option>
+
+      <!-- ДОПОЛНИТЕЛЬНЫЕ -->
+      <option value="Marselan|3">Marselan — 3</option>
+      <option value="Petit Verdot|4">Petit Verdot — 4</option>
+      <option value="Counoise|3">Counoise — 3</option>
+      <option value="Poulsard|2">Poulsard — 2</option>
+      <option value="Trousseau|3">Trousseau — 3</option>
     </select>
-    <div class="selected-count" id="selectedCount">Выбрано сортов: 0</div>
     <div class="tooltip">Просто кликайте по сортам для выбора нескольких вариантов</div>
   </div>
 
+  <!-- Остальные поля остаются без изменений -->
   <!-- Цвет вина -->
   <div class="form-group">
     <label>Цвет вина:</label>
@@ -452,12 +600,38 @@
 </div>
 
 <script>
+// Все сорта для поиска
+const allGrapes = Array.from(document.getElementById('grape').options);
+
 // Обновляем счетчик выбранных сортов
 function updateSelectedCount() {
   const grapeSelect = document.getElementById("grape");
   const selected = Array.from(grapeSelect.selectedOptions);
   const countElement = document.getElementById("selectedCount");
-  countElement.textContent = `Выбрано сортов: ${selected.length}`;
+  const totalElement = document.getElementById("totalCount");
+  
+  countElement.textContent = `Выбрано: ${selected.length}`;
+  totalElement.textContent = `Всего: ${grapeSelect.options.length}`;
+}
+
+// Фильтрация сортов
+function filterGrapes() {
+  const searchText = document.getElementById('searchGrape').value.toLowerCase();
+  const grapeSelect = document.getElementById('grape');
+  
+  // Очищаем текущий список
+  grapeSelect.innerHTML = '';
+  
+  // Фильтруем и добавляем подходящие варианты
+  const filteredGrapes = allGrapes.filter(grape => 
+    grape.text.toLowerCase().includes(searchText)
+  );
+  
+  filteredGrapes.forEach(grape => {
+    grapeSelect.add(grape);
+  });
+  
+  updateSelectedCount();
 }
 
 // Инициализация при загрузке
