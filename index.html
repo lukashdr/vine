@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Винный Компас Здоровья | Калькулятор тяжести вина</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; 
+    padding: 20px; 
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  
+  h1 {
+    color: #8a1538;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 2.2em;
+  }
+  
+  .subtitle {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+  }
+  
+  .dedication {
+    color: #8a1538;
+    font-style: italic;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 600;
+    color: #444;
+    font-size: 1.1em;
+  }
+  
+  select { 
+    width: 100%; 
+    padding: 15px;
+    border: 2px solid #e1e1e1;
+    border-radius: 12px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a1538' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #8a1538;
+    box-shadow: 0 0 0 3px rgba(138, 21, 56, 0.1);
+    background-color: #fff;
+  }
+  
+  /* Стили для множественного выбора */
+  #grape {
+    height: 250px;
+    background-image: none; /* Убираем стрелку для multiple select */
+  }
+  
+  #grape option {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  #grape option:hover {
+    background-color: #f8f0f3;
+  }
+  
+  #grape option:checked {
+    background: #8a1538 linear-gradient(0deg, #8a1538 0%, #8a1538 100%);
+    color: white;
+  }
+  
+  .selected-count {
+    color: #8a1538;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+  
+  .tooltip { 
+    font-size: 0.85em; 
+    color: #666; 
+    margin-top: 8px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  
+  .calculate-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #8a1538 0%, #6b2737 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(138, 21, 56, 0.3);
+  }
+  
+  .calculate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 21, 56, 0.4);
+  }
+  
+  .calculate-btn:active {
+    transform: translateY(0);
+  }
+  
+  #result { 
+    margin-top: 30px; 
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 1.3em;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 5px solid #8a1538;
+    display: none;
+  }
+  
+  .result-level {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .result-index {
+    font-size: 1.4em;
+    color: #555;
+  }
+  
+  .scale-bar {
+    height: 12px;
+    background: linear-gradient(90deg, #4caf50 0%, #ffeb3b 50%, #f44336 100%);
+    border-radius: 6px;
+    margin: 20px 0;
+    position: relative;
+  }
+  
+  .scale-marker {
+    position: absolute;
+    top: -5px;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border: 3px solid #333;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    transition: left 0.5s ease;
+  }
+  
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  .recommendation {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f5e8;
+    border-radius: 10px;
+    font-size: 0.95em;
+    text-align: left;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      padding: 15px;
+    }
+    
+    .container {
+      padding: 20px;
+      border-radius: 15px;
+    }
+    
+    h1 {
+      font-size: 1.8em;
+    }
+    
+    .subtitle {
+      font-size: 1em;
+    }
+    
+    select {
+      padding: 12px;
+      font-size: 16px;
+    }
+    
+    #grape {
+      height: 200px;
+    }
+    
+    .calculate-btn {
+      padding: 16px;
+      font-size: 16px;
+    }
+    
+    #result {
+      padding: 20px;
+      font-size: 1.1em;
+    }
+    
+    .result-level {
+      font-size: 1.5em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5em;
+    }
+    
+    .container {
+      padding: 15px;
+    }
+    
+    select {
+      padding: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🍷 Винный Компас Здоровья</h1>
+    <div class="subtitle">Интерактивный калькулятор тяжести вина</div>
+    <div class="subtitle"><strong>автор и разработчик Игорь Лукаш</strong></div>
+    <div class="dedication">посвящается друзьям</div>
+  </div>
+
+  <!-- Выбор сорта -->
+  <div class="form-group">
+    <label>Сорт винограда (выберите один или несколько):</label>
+    <select id="grape" multiple size="10">
+      <option value="Aglianico|5">Aglianico — 5</option>
+      <option value="Airén|1">Airén — 1</option>
+      <option value="Albariño|1">Albariño — 1</option>
+      <option value="Aligoté|1">Aligoté — 1</option>
+      <option value="Alvarelhão|3">Alvarelhão — 3</option>
+      <option value="Aragonez|3">Aragonez / Tinta Roriz — 3</option>
+      <option value="Assyrtiko|2">Assyrtiko — 2</option>
+      <option value="AxR|2">AxR — 2</option>
+      <option value="Barbera|4">Barbera — 4</option>
+      <option value="Blaufränkisch|3">Blaufränkisch — 3</option>
+      <option value="Bobal|3">Bobal — 3</option>
+      <option value="Bobal blanco|1">Bobal blanco — 1</option>
+      <option value="Bonarda|3">Bonarda — 3</option>
+      <option value="Cabernet Franc|3">Cabernet Franc — 3</option>
+      <option value="Cabernet Sauvignon|4">Cabernet Sauvignon — 4</option>
+      <option value="Carignan|4">Carignan / Carignan noir / Cariñena — 4</option>
+      <option value="Cesanese|3">Cesanese — 3</option>
+      <option value="Chardonnay|2">Chardonnay — 2</option>
+      <option value="Chenin Blanc|2">Chenin Blanc — 2</option>
+      <option value="Cinsault|3">Cinsault — 3</option>
+      <option value="Clairette|2">Clairette — 2</option>
+      <option value="Colombana Nera|3">Colombana Nera — 3</option>
+      <option value="Colombard|1">Colombard — 1</option>
+      <option value="Corvina|4">Corvina — 4</option>
+      <option value="Counoise|3">Counoise — 3</option>
+      <option value="Debina|1">Debina — 1</option>
+      <option value="Dolcetto|3">Dolcetto — 3</option>
+      <option value="Durif|4">Durif / Petite Sirah — 4</option>
+      <option value="Falanghina|2">Falanghina — 2</option>
+      <option value="Fetească Albă|1">Fetească Albă — 1</option>
+      <option value="Fetească Neagră|3">Fetească Neagră — 3</option>
+      <option value="Fiano|2">Fiano — 2</option>
+      <option value="Fiano di Avellino|2">Fiano di Avellino — 2</option>
+      <option value="Frappato|3">Frappato — 3</option>
+      <option value="Gaglioppo|3">Gaglioppo — 3</option>
+      <option value="Gamay|1">Gamay — 1</option>
+      <option value="Gamay noir|1">Gamay noir — 1</option>
+      <option value="Garnacha|3">Garnacha / Grenache — 3</option>
+      <option value="Gewürztraminer|2">Gewürztraminer — 2</option>
+      <option value="Glera|1">Glera — 1</option>
+      <option value="Grignolino|3">Grignolino — 3</option>
+      <option value="Grüner Veltliner|2">Grüner Veltliner — 2</option>
+      <option value="Malbec|4">Malbec — 4</option>
+      <option value="Marselan|3">Marselan — 3</option>
+      <option value="Mavrodaphne|3">Mavrodaphne — 3</option>
+      <option value="Mavrotragano|4">Mavrotragano — 4</option>
+      <option value="Mencia|3">Mencia — 3</option>
+      <option value="Merlot|3">Merlot — 3</option>
+      <option value="Monica|3">Monica — 3</option>
+      <option value="Montepulciano|3">Montepulciano — 3</option>
+      <option value="Mourvèdre|5">Mourvèdre / Monastrell — 5</option>
+      <option value="Moscatel|1">Moscatel / Muscat — 1</option>
+      <option value="Müller-Thurgau|1">Müller-Thurgau — 1</option>
+      <option value="Nebbiolo|5">Nebbiolo — 5</option>
+      <option value="Nero d'Avola|4">Nero d'Avola — 4</option>
+      <option value="Nielluccio|3">Nielluccio — 3</option>
+      <option value="Nosiola|1">Nosiola — 1</option>
+      <option value="Palomino Fino|1">Palomino Fino — 1</option>
+      <option value="Petit Manseng|2">Petit Manseng — 2</option>
+      <option value="Petit Rouge|3">Petit Rouge — 3</option>
+      <option value="Petit Verdot|4">Petit Verdot — 4</option>
+      <option value="Petite Arvine|1">Petite Arvine — 1</option>
+      <option value="Pinot Blanc|1">Pinot Blanc — 1</option>
+      <option value="Pinot Gris|1">Pinot Gris / Pinot Grigio — 1</option>
+      <option value="Pinot Noir|1">Pinot Noir — 1</option>
+      <option value="Primitivo|4">Primitivo / Zinfandel — 4</option>
+      <option value="Rara Neagră|3">Rara Neagră — 3</option>
+      <option value="Rkatsiteli|1">Rkatsiteli — 1</option>
+      <option value="Roditis|1">Roditis — 1</option>
+      <option value="Roussanne|2">Roussanne — 2</option>
+      <option value="Sagrantino|5">Sagrantino — 5</option>
+      <option value="Sangiovese|3">Sangiovese — 3</option>
+      <option value="Sauvignon Blanc|1">Sauvignon Blanc — 1</option>
+      <option value="Sémillon|2">Sémillon — 2</option>
+      <option value="Shiraz|4">Shiraz / Syrah — 4</option>
+      <option value="Silvaner|1">Silvaner (Sylvaner) — 1</option>
+      <option value="Tannat|4">Tannat — 4</option>
+      <option value="Tempranillo|3">Tempranillo — 3</option>
+      <option value="Touriga Nacional|4">Touriga Nacional — 4</option>
+      <option value="Trebbiano|1">Trebbiano — 1</option>
+      <option value="Trebbiano Toscano|1">Trebbiano Toscano — 1</option>
+      <option value="Ugni Blanc|1">Ugni Blanc — 1</option>
+      <option value="Verdejo|2">Verdejo — 2</option>
+      <option value="Verdelho|2">Verdelho — 2</option>
+      <option value="Verduzzo|2">Verduzzo — 2</option>
+      <option value="Vermentino|2">Vermentino — 2</option>
+      <option value="Viognier|2">Viognier — 2</option>
+      <option value="Viura|2">Viura / Macabeo — 2</option>
+      <option value="Vinhão|4">Vinhão — 4</option>
+      <option value="Xarel-lo|2">Xarel-lo — 2</option>
+      <option value="Zibibbo|1">Zibibbo — 1</option>
+      <option value="Zweigelt|3">Zweigelt — 3</option>
+    </select>
+    <div class="selected-count" id="selectedCount">Выбрано сортов: 0</div>
+    <div class="tooltip">Просто кликайте по сортам для выбора нескольких вариантов</div>
+  </div>
+
+  <!-- Цвет вина -->
+  <div class="form-group">
+    <label>Цвет вина:</label>
+    <select id="color">
+      <option value="">-- Выберите цвет --</option>
+      <option value="0">Белое (White) — ищите на бутылке: White, Blanc, Bianco, Weiß</option>
+      <option value="0.1">Розовое (Rosé / Pink) — Rosé, Pink, Blush</option>
+      <option value="0.2">Красное (Red) — Red, Rouge, Rosso, Tinto</option>
+      <option value="0.1">Оранжевое / Skin-contact — Orange wine, Skin-contact</option>
+    </select>
+  </div>
+
+  <!-- Выдержка -->
+  <div class="form-group">
+    <label>Выдержка:</label>
+    <select id="aging">
+      <option value="">-- Выберите выдержку --</option>
+      <option value="0">Молодое / Non-aged — Young, Non-aged, Jeune, Novo</option>
+      <option value="0.2">Выдержанное / Barrel-aged — Barrel-aged, Oak-aged, Matured, Vieilli</option>
+      <option value="0.3">Reserva / Riserva — Reserva, Riserva, Classico</option>
+      <option value="0.4">Gran Reserva / Grand Cru — Gran Reserva, Grand Cru, Great Growth</option>
+    </select>
+  </div>
+
+  <!-- Сахар -->
+  <div class="form-group">
+    <label>Содержание сахара:</label>
+    <select id="sugar">
+      <option value="">-- Выберите содержание сахара --</option>
+      <option value="0">Сухое — Dry, Seco, Sec, Secco (до 4 г/л)</option>
+      <option value="0.1">Полусухое — Off-dry, Semi-dry, Demi-sec, Semi-secco (4-12 г/л)</option>
+      <option value="0.2">Полусладкое — Semi-sweet, Medium sweet, Demi-doux (12-45 г/л)</option>
+      <option value="0.3">Сладкое — Sweet, Liquoreux, Dolce, Doux (45-120 г/л)</option>
+      <option value="0.4">Очень сладкое — Very Sweet, Dessert wine (>120 г/л)</option>
+    </select>
+  </div>
+
+  <!-- Алкоголь -->
+  <div class="form-group">
+    <label>Алкоголь (% ABV):</label>
+    <select id="alcohol">
+      <option value="">-- Выберите крепость --</option>
+      <option value="0">Низкий &lt;11%</option>
+      <option value="0.1">Средний 11–13%</option>
+      <option value="0.2">Выше среднего 13–14.5%</option>
+      <option value="0.3">Высокий &gt;14.5%</option>
+    </select>
+  </div>
+
+  <button class="calculate-btn" onclick="calculate()">🍷 Рассчитать тяжесть вина</button>
+
+  <div id="result">
+    <div class="result-level" id="resultLevel"></div>
+    <div class="result-index" id="resultIndex"></div>
+    <div class="scale-bar">
+      <div class="scale-marker" id="scaleMarker"></div>
+    </div>
+    <div class="scale-labels">
+      <span>Лёгкое</span>
+      <span>Среднее</span>
+      <span>Тяжёлое</span>
+      <span>Очень тяжёлое</span>
+    </div>
+    <div class="recommendation" id="recommendation"></div>
+  </div>
+</div>
+
+<script>
+// Обновляем счетчик выбранных сортов
+function updateSelectedCount() {
+  const grapeSelect = document.getElementById("grape");
+  const selected = Array.from(grapeSelect.selectedOptions);
+  const countElement = document.getElementById("selectedCount");
+  countElement.textContent = `Выбрано сортов: ${selected.length}`;
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+  const grapeSelect = document.getElementById("grape");
+  grapeSelect.addEventListener('change', updateSelectedCount);
+  updateSelectedCount();
+});
+
+function calculate() {
+  const grapeSelect = document.getElementById("grape");
+  const selected = Array.from(grapeSelect.selectedOptions);
+  
+  if (selected.length === 0) {
+    alert("Пожалуйста, выберите хотя бы один сорт винограда!");
+    return;
+  }
+  
+  const color = document.getElementById("color").value;
+  const aging = document.getElementById("aging").value;
+  const sugar = document.getElementById("sugar").value;
+  const alcohol = document.getElementById("alcohol").value;
+  
+  if (color === "" || aging === "" || sugar === "" || alcohol === "") {
+    alert("Пожалуйста, заполните все поля!");
+    return;
+  }
+  
+  // Базовый индекс по купажу (среднее значение)
+  let baseIndex = selected.reduce((sum, opt) => {
+    return sum + parseFloat(opt.value.split('|')[1]);
+  }, 0) / selected.length;
+
+  const finalIndex = (baseIndex + parseFloat(color) + parseFloat(aging) + parseFloat(sugar) + parseFloat(alcohol)).toFixed(2);
+  
+  // Показываем результат
+  showResult(finalIndex);
+}
+
+function showResult(finalIndex) {
+  const resultDiv = document.getElementById("result");
+  const resultLevel = document.getElementById("resultLevel");
+  const resultIndex = document.getElementById("resultIndex");
+  const scaleMarker = document.getElementById("scaleMarker");
+  const recommendation = document.getElementById("recommendation");
+  
+  // Определение уровня тяжести и цвета
+  let level = "";
+  let levelColor = "";
+  let recommendationText = "";
+  
+  if (finalIndex < 2) {
+    level = "Лёгкое вино 🍃";
+    levelColor = "#4caf50";
+    recommendationText = "💡 Идеально для начала вечера, сочетается с лёгкими закусками, рыбой и салатами. Можно пить бокалами.";
+  } else if (finalIndex < 3) {
+    level = "Средней тяжести ⚖️";
+    levelColor = "#ff9800";
+    recommendationText = "💡 Хороший баланс. Сочетается с мясом, пастой, сырами. Умеренное потребление.";
+  } else if (finalIndex < 4) {
+    level = "Тяжёлое вино 🔥";
+    levelColor = "#ff5722";
+    recommendationText = "💡 Мощное вино для серьёзных блюд: красное мясо, дичь, выдержанные сыры. Пейте медленно, с водой.";
+  } else {
+    level = "Очень тяжёлое вино ⚡";
+    levelColor = "#d32f2f";
+    recommendationText = "💡 Максимальная нагрузка! Только для особых случаев с жирной пищей. Обязательно пейте воду, не более 1-2 бокалов.";
+  }
+  
+  // Устанавливаем значения
+  resultLevel.textContent = level;
+  resultLevel.style.color = levelColor;
+  resultIndex.textContent = `Индекс тяжести: ${finalIndex} из 5`;
+  
+  // Позиция маркера на шкале (от 0 до 100%)
+  const markerPosition = Math.min((finalIndex / 5) * 100, 100);
+  scaleMarker.style.left = `${markerPosition}%`;
+  scaleMarker.style.borderColor = levelColor;
+  
+  recommendation.textContent = recommendationText;
+  
+  // Показываем результат
+  resultDiv.style.display = 'block';
+  
+  // Плавная прокрутка к результату
+  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Добавляем обработчик клавиш для удобства
+document.addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    calculate();
+  }
+});
+</script>
+
+</body>
+</html>
