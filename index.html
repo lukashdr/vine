@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Винный Компас Здоровья | Калькулятор тяжести вина</title>
+<title>Калькулятор тяжести вина</title>
 <style>
   * {
     box-sizing: border-box;
@@ -14,7 +14,7 @@
   body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     margin: 0; 
-    padding: 20px; 
+    padding: 15px; 
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     color: #333;
     line-height: 1.6;
@@ -22,43 +22,51 @@
   }
   
   .container {
-    max-width: 800px;
+    max-width: 480px;
     margin: 0 auto;
     background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
   
   .header {
     text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
     border-bottom: 2px solid #f0f0f0;
   }
   
   h1 {
     color: #8a1538;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-weight: 700;
-    font-size: 2.2em;
+    font-size: 1.8em;
   }
   
-  .subtitle {
-    color: #666;
-    font-size: 1.1em;
+  .info-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: #8a1538;
+    border: 2px solid #8a1538;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
     margin-bottom: 5px;
   }
   
-  .dedication {
-    color: #8a1538;
-    font-style: italic;
-    font-weight: 500;
-    margin-top: 10px;
+  .info-btn:hover {
+    background: #8a1538;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(138, 21, 56, 0.3);
   }
   
   .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
   
   label { 
@@ -85,6 +93,63 @@
     box-shadow: 0 0 0 3px rgba(138, 21, 56, 0.1);
   }
   
+  .grape-list {
+    max-height: 350px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 12px;
+    background: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .grape-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .grape-item:last-child {
+    border-bottom: none;
+  }
+  
+  .grape-item input {
+    margin-right: 12px;
+    transform: scale(1.2);
+  }
+  
+  .grape-item:hover {
+    background-color: #f8f0f3;
+  }
+  
+  .selected-grapes-block {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #f8f9fa;
+    border-left: 4px solid #8a1538;
+  }
+  
+  .selected-grapes-block h4 {
+    color: #8a1538;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .tag {
+    background: #8a1538;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    display: inline-block;
+    font-size: 14px;
+  }
+  
   select { 
     width: 100%; 
     padding: 15px;
@@ -107,46 +172,6 @@
     border-color: #8a1538;
     box-shadow: 0 0 0 3px rgba(138, 21, 56, 0.1);
     background-color: #fff;
-  }
-  
-  /* Стили для множественного выбора */
-  #grape {
-    height: 250px;
-    background-image: none;
-  }
-  
-  #grape option {
-    padding: 8px 12px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  #grape option:hover {
-    background-color: #f8f0f3;
-  }
-  
-  #grape option:checked {
-    background: #8a1538 linear-gradient(0deg, #8a1538 0%, #8a1538 100%);
-    color: white;
-  }
-  
-  .search-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-  
-  .selected-count {
-    color: #8a1538;
-    font-weight: 600;
-    font-size: 0.9em;
-  }
-  
-  .total-count {
-    color: #666;
-    font-size: 0.9em;
   }
   
   .tooltip { 
@@ -181,30 +206,9 @@
     transform: translateY(0);
   }
   
-  .info-btn {
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    color: #8a1538;
-    border: 2px solid #8a1538;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 15px;
-  }
-  
-  .info-btn:hover {
-    background: #8a1538;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(138, 21, 56, 0.3);
-  }
-  
   #result { 
     margin-top: 30px; 
-    padding: 25px;
+    padding: 20px;
     border-radius: 15px;
     text-align: left;
     font-size: 1em;
@@ -214,28 +218,28 @@
   }
   
   .result-level {
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-weight: 700;
     margin-bottom: 15px;
     text-align: center;
   }
   
   .result-index {
-    font-size: 1.4em;
+    font-size: 1.2em;
     color: #555;
     text-align: center;
     margin-bottom: 20px;
   }
   
   .result-category {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     padding: 15px;
     border-radius: 10px;
     background: white;
   }
   
   .result-category h3 {
-    font-size: 1.3em;
+    font-size: 1.2em;
     margin-bottom: 15px;
     padding-bottom: 8px;
     border-bottom: 2px solid;
@@ -279,7 +283,7 @@
   .scale-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: #666;
     margin-top: 5px;
   }
@@ -298,11 +302,10 @@
   
   .modal-content {
     background-color: white;
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 700px;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 15px;
+    width: 95%;
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
@@ -311,8 +314,8 @@
   
   .close {
     position: absolute;
-    right: 20px;
-    top: 15px;
+    right: 15px;
+    top: 10px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -324,13 +327,13 @@
   }
   
   .modal-section {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
   
   .modal-section h3 {
     color: #8a1538;
     margin-bottom: 10px;
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
   
   .modal-section ul {
@@ -346,12 +349,13 @@
     width: 100%;
     border-collapse: collapse;
     margin: 15px 0;
+    font-size: 0.9em;
   }
   
   .parameter-table th,
   .parameter-table td {
     border: 1px solid #ddd;
-    padding: 12px;
+    padding: 10px;
     text-align: left;
   }
   
@@ -365,31 +369,17 @@
     background-color: #f9f9f9;
   }
   
-  @media (max-width: 768px) {
-    body {
+  @media (max-width: 380px) {
+    .container {
       padding: 15px;
     }
     
-    .container {
-      padding: 20px;
-      border-radius: 15px;
-    }
-    
     h1 {
-      font-size: 1.8em;
-    }
-    
-    .subtitle {
-      font-size: 1em;
+      font-size: 1.5em;
     }
     
     select {
       padding: 12px;
-      font-size: 16px;
-    }
-    
-    #grape {
-      height: 200px;
     }
     
     .calculate-btn {
@@ -403,53 +393,15 @@
     }
     
     #result {
-      padding: 20px;
-      font-size: 0.95em;
+      padding: 15px;
     }
     
     .result-level {
-      font-size: 1.5em;
-    }
-    
-    .modal-content {
-      margin: 10% auto;
-      padding: 20px;
-      width: 95%;
-    }
-    
-    .parameter-table {
-      font-size: 0.9em;
-    }
-    
-    .parameter-table th,
-    .parameter-table td {
-      padding: 8px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 1.5em;
-    }
-    
-    .container {
-      padding: 15px;
-    }
-    
-    select {
-      padding: 10px;
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
+      font-size: 1.3em;
     }
     
     .modal-content {
       padding: 15px;
-    }
-    
-    .parameter-table {
-      font-size: 0.8em;
     }
   }
 </style>
@@ -458,229 +410,759 @@
 
 <div class="container">
   <div class="header">
-    <h1>🍷 Винный Компас Здоровья</h1>
-    <div class="subtitle">Калькулятор тяжести вина</div>
-    <div class="dedication"></div>
+    <h1>🍷 Калькулятор тяжести вина</h1>
+    <button class="info-btn" onclick="showInfo()">📊 Зачем нужен расчет индекса?</button>
   </div>
 
   <!-- Выбор сорта -->
   <div class="form-group">
     <label>Сорт винограда (выберите один или несколько):</label>
-    <input type="text" id="searchGrape" class="search-box" placeholder="🔍 Поиск сорта винограда..." onkeyup="filterGrapes()" onfocus="showDropdown()">
-    <div class="search-info">
-      <div class="selected-count" id="selectedCount">Выбрано: 0</div>
-      <div class="total-count" id="totalCount">Всего: 0</div>
-    </div>
-    <select id="grape" multiple size="12">
+    <input type="text" id="grapeSearch" class="search-box" placeholder="🔍 Поиск сорта винограда..." oninput="filterGrapes()">
+    
+    <div class="grape-list">
       <!-- НЕМЕЦКИЕ/АВСТРИЙСКИЕ -->
-      <option value="Riesling|1">Riesling — 1</option>
-      <option value="Müller-Thurgau|1">Müller-Thurgau — 1</option>
-      <option value="Silvaner|1">Silvaner — 1</option>
-      <option value="Gewürztraminer|2">Gewürztraminer — 2</option>
-      <option value="Grüner Veltliner|2">Grüner Veltliner — 2</option>
-      <option value="Blaufränkisch|3">Blaufränkisch — 3</option>
-      <option value="Zweigelt|3">Zweigelt — 3</option>
-      <option value="Trollinger|2">Trollinger — 2</option>
-      <option value="Kerner|2">Kerner — 2</option>
-      <option value="Bacchus|1">Bacchus — 1</option>
-      <option value="Ortega|1">Ortega — 1</option>
-      <option value="Dornfelder|3">Dornfelder — 3</option>
-      <option value="Rotgipfler|2">Rotgipfler — 2</option>
-      <option value="Zierfandler|2">Zierfandler — 2</option>
-      <option value="St. Laurent|3">St. Laurent — 3</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Riesling">
+        <span>Riesling — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Müller-Thurgau">
+        <span>Müller-Thurgau — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Silvaner">
+        <span>Silvaner — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Gewürztraminer">
+        <span>Gewürztraminer — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Grüner Veltliner">
+        <span>Grüner Veltliner — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Blaufränkisch">
+        <span>Blaufränkisch — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Zweigelt">
+        <span>Zweigelt — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Trollinger">
+        <span>Trollinger — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Kerner">
+        <span>Kerner — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Bacchus">
+        <span>Bacchus — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Ortega">
+        <span>Ortega — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Dornfelder">
+        <span>Dornfelder — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Rotgipfler">
+        <span>Rotgipfler — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Zierfandler">
+        <span>Zierfandler — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="St. Laurent">
+        <span>St. Laurent — 3</span>
+      </label>
 
       <!-- ФРАНЦУЗСКИЕ -->
-      <option value="Pinot Noir|1">Pinot Noir — 1</option>
-      <option value="Gamay|1">Gamay — 1</option>
-      <option value="Cabernet Franc|3">Cabernet Franc — 3</option>
-      <option value="Merlot|3">Merlot — 3</option>
-      <option value="Syrah|4">Syrah — 4</option>
-      <option value="Grenache|3">Grenache — 3</option>
-      <option value="Mourvèdre|5">Mourvèdre — 5</option>
-      <option value="Carignan|4">Carignan — 4</option>
-      <option value="Cinsault|3">Cinsault — 3</option>
-      <option value="Malbec|4">Malbec — 4</option>
-      <option value="Cabernet Sauvignon|4">Cabernet Sauvignon — 4</option>
-      <option value="Pinot Gris|1">Pinot Gris — 1</option>
-      <option value="Chardonnay|2">Chardonnay — 2</option>
-      <option value="Sauvignon Blanc|1">Sauvignon Blanc — 1</option>
-      <option value="Sémillon|2">Sémillon — 2</option>
-      <option value="Viognier|2">Viognier — 2</option>
-      <option value="Marsanne|2">Marsanne — 2</option>
-      <option value="Roussanne|2">Roussanne — 2</option>
-      <option value="Chenin Blanc|2">Chenin Blanc — 2</option>
-      <option value="Muscat|1">Muscat — 1</option>
-      <option value="Picpoul|1">Picpoul — 1</option>
-      <option value="Ugni Blanc|1">Ugni Blanc — 1</option>
-      <option value="Clairette|2">Clairette — 2</option>
-      <option value="Bourboulenc|2">Bourboulenc — 2</option>
-      <option value="Alicante Bouschet|4">Alicante Bouschet — 4</option>
-      <option value="Petit Manseng|2">Petit Manseng — 2</option>
-      <option value="Gros Manseng|2">Gros Manseng — 2</option>
-      <option value="Mauzac|2">Mauzac — 2</option>
-      <option value="Tannat|4">Tannat — 4</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Pinot Noir">
+        <span>Pinot Noir — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Gamay">
+        <span>Gamay — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Cabernet Franc">
+        <span>Cabernet Franc — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Merlot">
+        <span>Merlot — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Syrah">
+        <span>Syrah — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Grenache">
+        <span>Grenache — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="5" value="Mourvèdre">
+        <span>Mourvèdre — 5</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Carignan">
+        <span>Carignan — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Cinsault">
+        <span>Cinsault — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Malbec">
+        <span>Malbec — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Cabernet Sauvignon">
+        <span>Cabernet Sauvignon — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Pinot Gris">
+        <span>Pinot Gris — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Chardonnay">
+        <span>Chardonnay — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Sauvignon Blanc">
+        <span>Sauvignon Blanc — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Sémillon">
+        <span>Sémillon — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Viognier">
+        <span>Viognier — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Marsanne">
+        <span>Marsanne — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Roussanne">
+        <span>Roussanne — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Chenin Blanc">
+        <span>Chenin Blanc — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Muscat">
+        <span>Muscat — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Picpoul">
+        <span>Picpoul — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Ugni Blanc">
+        <span>Ugni Blanc — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Clairette">
+        <span>Clairette — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Bourboulenc">
+        <span>Bourboulenc — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Alicante Bouschet">
+        <span>Alicante Bouschet — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Petit Manseng">
+        <span>Petit Manseng — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Gros Manseng">
+        <span>Gros Manseng — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Mauzac">
+        <span>Mauzac — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Tannat">
+        <span>Tannat — 4</span>
+      </label>
 
       <!-- ИТАЛЬЯНСКИЕ -->
-      <option value="Sangiovese|3">Sangiovese — 3</option>
-      <option value="Nebbiolo|5">Nebbiolo — 5</option>
-      <option value="Barbera|4">Barbera — 4</option>
-      <option value="Dolcetto|3">Dolcetto — 3</option>
-      <option value="Montepulciano|3">Montepulciano — 3</option>
-      <option value="Primitivo|4">Primitivo — 4</option>
-      <option value="Negroamaro|4">Negroamaro — 4</option>
-      <option value="Nero d'Avola|4">Nero d'Avola — 4</option>
-      <option value="Aglianico|5">Aglianico — 5</option>
-      <option value="Corvina|4">Corvina — 4</option>
-      <option value="Garganega|2">Garganega — 2</option>
-      <option value="Trebbiano|1">Trebbiano — 1</option>
-      <option value="Vermentino|2">Vermentino — 2</option>
-      <option value="Fiano|2">Fiano — 2</option>
-      <option value="Falanghina|2">Falanghina — 2</option>
-      <option value="Greco|2">Greco — 2</option>
-      <option value="Lambrusco|2">Lambrusco — 2</option>
-      <option value="Glera|1">Glera — 1 (Prosecco)</option>
-      <option value="Pinot Grigio|1">Pinot Grigio — 1</option>
-      <option value="Lagrein|4">Lagrein — 4</option>
-      <option value="Schiava|2">Schiava — 2</option>
-      <option value="Teroldego|3">Teroldego — 3</option>
-      <option value="Refosco|3">Refosco — 3</option>
-      <option value="Pignolo|4">Pignolo — 4</option>
-      <option value="Ribolla Gialla|1">Ribolla Gialla — 1</option>
-      <option value="Cataratto|1">Cataratto — 1</option>
-      <option value="Inzolia|1">Inzolia — 1</option>
-      <option value="Frappato|3">Frappato — 3</option>
-      <option value="Nerello Mascalese|3">Nerello Mascalese — 3</option>
-      <option value="Carricante|2">Carricante — 2</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Sangiovese">
+        <span>Sangiovese — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="5" value="Nebbiolo">
+        <span>Nebbiolo — 5</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Barbera">
+        <span>Barbera — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Dolcetto">
+        <span>Dolcetto — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Montepulciano">
+        <span>Montepulciano — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Primitivo">
+        <span>Primitivo — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Negroamaro">
+        <span>Negroamaro — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Nero d'Avola">
+        <span>Nero d'Avola — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="5" value="Aglianico">
+        <span>Aglianico — 5</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Corvina">
+        <span>Corvina — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Garganega">
+        <span>Garganega — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Trebbiano">
+        <span>Trebbiano — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Vermentino">
+        <span>Vermentino — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Fiano">
+        <span>Fiano — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Falanghina">
+        <span>Falanghina — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Greco">
+        <span>Greco — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Lambrusco">
+        <span>Lambrusco — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Glera">
+        <span>Glera — 1 (Prosecco)</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Pinot Grigio">
+        <span>Pinot Grigio — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Lagrein">
+        <span>Lagrein — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Schiava">
+        <span>Schiava — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Teroldego">
+        <span>Teroldego — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Refosco">
+        <span>Refosco — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Pignolo">
+        <span>Pignolo — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Ribolla Gialla">
+        <span>Ribolla Gialla — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Cataratto">
+        <span>Cataratto — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Inzolia">
+        <span>Inzolia — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Frappato">
+        <span>Frappato — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Nerello Mascalese">
+        <span>Nerello Mascalese — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Carricante">
+        <span>Carricante — 2</span>
+      </label>
 
       <!-- ИСПАНСКИЕ -->
-      <option value="Tempranillo|3">Tempranillo — 3</option>
-      <option value="Garnacha|3">Garnacha — 3</option>
-      <option value="Monastrell|5">Monastrell — 5</option>
-      <option value="Bobal|3">Bobal — 3</option>
-      <option value="Graciano|4">Graciano — 4</option>
-      <option value="Mencía|3">Mencía — 3</option>
-      <option value="Albariño|1">Albariño — 1</option>
-      <option value="Verdejo|2">Verdejo — 2</option>
-      <option value="Godello|2">Godello — 2</option>
-      <option value="Xarel-lo|2">Xarel-lo — 2</option>
-      <option value="Macabeo|2">Macabeo — 2</option>
-      <option value="Parellada|1">Parellada — 1</option>
-      <option value="Airén|1">Airén — 1</option>
-      <option value="Palomino|1">Palomino — 1</option>
-      <option value="Prieto Picudo|3">Prieto Picudo — 3</option>
-      <option value="Juan García|3">Juan García — 3</option>
-      <option value="Listán Negro|3">Listán Negro — 3</option>
-      <option value="Listán Blanco|1">Listán Blanco — 1</option>
-      <option value="Cayetana|1">Cayetana — 1</option>
-      <option value="Mazuelo|4">Mazuelo — 4</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Tempranillo">
+        <span>Tempranillo — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Garnacha">
+        <span>Garnacha — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="5" value="Monastrell">
+        <span>Monastrell — 5</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Bobal">
+        <span>Bobal — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Graciano">
+        <span>Graciano — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Mencía">
+        <span>Mencía — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Albariño">
+        <span>Albariño — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Verdejo">
+        <span>Verdejo — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Godello">
+        <span>Godello — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Xarel-lo">
+        <span>Xarel-lo — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Macabeo">
+        <span>Macabeo — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Parellada">
+        <span>Parellada — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Airén">
+        <span>Airén — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Palomino">
+        <span>Palomino — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Prieto Picudo">
+        <span>Prieto Picudo — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Juan García">
+        <span>Juan García — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Listán Negro">
+        <span>Listán Negro — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Listán Blanco">
+        <span>Listán Blanco — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Cayetana">
+        <span>Cayetana — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Mazuelo">
+        <span>Mazuelo — 4</span>
+      </label>
 
       <!-- ПОРТУГАЛЬСКИЕ -->
-      <option value="Touriga Nacional|4">Touriga Nacional — 4</option>
-      <option value="Touriga Franca|3">Touriga Franca — 3</option>
-      <option value="Tinta Roriz|3">Tinta Roriz — 3</option>
-      <option value="Alfrocheiro|3">Alfrocheiro — 3</option>
-      <option value="Baga|4">Baga — 4</option>
-      <option value="Castelão|3">Castelão — 3</option>
-      <option value="Trincadeira|3">Trincadeira — 3</option>
-      <option value="Arinto|1">Arinto — 1</option>
-      <option value="Alvarinho|1">Alvarinho — 1</option>
-      <option value="Loureiro|1">Loureiro — 1</option>
-      <option value="Encruzado|2">Encruzado — 2</option>
-      <option value="Jaen|3">Jaen — 3</option>
-      <option value="Rufete|2">Rufete — 2</option>
-      <option value="Bical|1">Bical — 1</option>
-      <option value="Fernão Pires|1">Fernão Pires — 1</option>
-      <option value="Vital|1">Vital — 1</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Touriga Nacional">
+        <span>Touriga Nacional — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Touriga Franca">
+        <span>Touriga Franca — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Tinta Roriz">
+        <span>Tinta Roriz — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Alfrocheiro">
+        <span>Alfrocheiro — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Baga">
+        <span>Baga — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Castelão">
+        <span>Castelão — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Trincadeira">
+        <span>Trincadeira — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Arinto">
+        <span>Arinto — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Alvarinho">
+        <span>Alvarinho — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Loureiro">
+        <span>Loureiro — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Encruzado">
+        <span>Encruzado — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Jaen">
+        <span>Jaen — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Rufete">
+        <span>Rufete — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Bical">
+        <span>Bical — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Fernão Pires">
+        <span>Fernão Pires — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Vital">
+        <span>Vital — 1</span>
+      </label>
 
       <!-- ГРУЗИНСКИЕ/АБХАЗСКИЕ -->
-      <option value="Rkatsiteli|1">Rkatsiteli — 1</option>
-      <option value="Saperavi|4">Saperavi — 4</option>
-      <option value="Mtsvane|2">Mtsvane — 2</option>
-      <option value="Kisi|2">Kisi — 2</option>
-      <option value="Chinuri|1">Chinuri — 1</option>
-      <option value="Krakhuna|2">Krakhuna — 2</option>
-      <option value="Tsolikouri|1">Tsolikouri — 1</option>
-      <option value="Tsitska|1">Tsitska — 1</option>
-      <option value="Aleksandrouli|3">Aleksandrouli — 3</option>
-      <option value="Ojaleshi|3">Ojaleshi — 3</option>
-      <option value="Usakhelouri|4">Usakhelouri — 4</option>
-      <option value="Tavkveri|2">Tavkveri — 2</option>
-      <option value="Goruli Mtsvane|2">Goruli Mtsvane — 2</option>
-      <option value="Chkhaveri|1">Chkhaveri — 1</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Rkatsiteli">
+        <span>Rkatsiteli — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Saperavi">
+        <span>Saperavi — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Mtsvane">
+        <span>Mtsvane — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Kisi">
+        <span>Kisi — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Chinuri">
+        <span>Chinuri — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Krakhuna">
+        <span>Krakhuna — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Tsolikouri">
+        <span>Tsolikouri — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Tsitska">
+        <span>Tsitska — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Aleksandrouli">
+        <span>Aleksandrouli — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Ojaleshi">
+        <span>Ojaleshi — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Usakhelouri">
+        <span>Usakhelouri — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Tavkveri">
+        <span>Tavkveri — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Goruli Mtsvane">
+        <span>Goruli Mtsvane — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Chkhaveri">
+        <span>Chkhaveri — 1</span>
+      </label>
 
       <!-- РОССИЙСКИЕ/КРЫМСКИЕ -->
-      <option value="Krasnostop|3">Krasnostop — 3</option>
-      <option value="Sibirkovy|2">Sibirkovy — 2</option>
-      <option value="Tsimlyansky|3">Tsimlyansky — 3</option>
-      <option value="Pukhlyakovsky|2">Pukhlyakovsky — 2</option>
-      <option value="Dostoyny|3">Dostoyny — 3</option>
-      <option value="Viorica|1">Viorica — 1</option>
-      <option value="Aligote|1">Aligote — 1</option>
-      <option value="Cabernet|4">Cabernet — 4</option>
-      <option value="Bastardo|3">Bastardo — 3</option>
-      <option value="Цитронный Магарача|1">Цитронный Магарача — 1</option>
-      <option value="Первенец Магарача|2">Первенец Магарача — 2</option>
-      <option value="Ранний Магарача|2">Ранний Магарача — 2</option>
-      <option value="Мускат одесский|1">Мускат одесский — 1</option>
-      <option value="Подарок Магарача|3">Подарок Магарача — 3</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Krasnostop">
+        <span>Krasnostop — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Sibirkovy">
+        <span>Sibirkovy — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Tsimlyansky">
+        <span>Tsimlyansky — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Pukhlyakovsky">
+        <span>Pukhlyakovsky — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Dostoyny">
+        <span>Dostoyny — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Viorica">
+        <span>Viorica — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Aligote">
+        <span>Aligote — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Cabernet">
+        <span>Cabernet — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Bastardo">
+        <span>Bastardo — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Цитронный Магарача">
+        <span>Цитронный Магарача — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Первенец Магарача">
+        <span>Первенец Магарача — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Ранний Магарача">
+        <span>Ранний Магарача — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Мускат одесский">
+        <span>Мускат одесский — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Подарок Магарача">
+        <span>Подарок Магарача — 3</span>
+      </label>
 
       <!-- ВОСТОЧНОЕВРОПЕЙСКИЕ -->
-      <option value="Fetească Albă|1">Fetească Albă — 1</option>
-      <option value="Fetească Regală|1">Fetească Regală — 1</option>
-      <option value="Fetească Neagră|3">Fetească Neagră — 3</option>
-      <option value="Kadarka|3">Kadarka — 3</option>
-      <option value="Kékfrankos|3">Kékfrankos — 3</option>
-      <option value="Irsai Olivér|1">Irsai Olivér — 1</option>
-      <option value="Plavac Mali|4">Plavac Mali — 4</option>
-      <option value="Pošip|2">Pošip — 2</option>
-      <option value="Vranac|4">Vranac — 4</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Fetească Albă">
+        <span>Fetească Albă — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Fetească Regală">
+        <span>Fetească Regală — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Fetească Neagră">
+        <span>Fetească Neagră — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Kadarka">
+        <span>Kadarka — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Kékfrankos">
+        <span>Kékfrankos — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Irsai Olivér">
+        <span>Irsai Olivér — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Plavac Mali">
+        <span>Plavac Mali — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Pošip">
+        <span>Pošip — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Vranac">
+        <span>Vranac — 4</span>
+      </label>
 
       <!-- АРМЯНСКИЕ -->
-      <option value="Areni|3">Areni — 3</option>
-      <option value="Voskehat|2">Voskehat — 2</option>
-      <option value="Kangun|3">Kangun — 3</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Areni">
+        <span>Areni — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Voskehat">
+        <span>Voskehat — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Kangun">
+        <span>Kangun — 3</span>
+      </label>
 
       <!-- ЮЖНОАФРИКАНСКИЕ -->
-      <option value="Pinotage|4">Pinotage — 4</option>
-      <option value="Cinsaut|3">Cinsaut — 3</option>
-      <option value="Colombard|1">Colombard — 1</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Pinotage">
+        <span>Pinotage — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Cinsaut">
+        <span>Cinsaut — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Colombard">
+        <span>Colombard — 1</span>
+      </label>
 
       <!-- АМЕРИКАНСКИЕ -->
-      <option value="Zinfandel|4">Zinfandel — 4</option>
-      <option value="Petite Sirah|4">Petite Sirah — 4</option>
-      <option value="Concord|2">Concord — 2</option>
-      <option value="Catawba|2">Catawba — 2</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Zinfandel">
+        <span>Zinfandel — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Petite Sirah">
+        <span>Petite Sirah — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Concord">
+        <span>Concord — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Catawba">
+        <span>Catawba — 2</span>
+      </label>
 
       <!-- АВСТРАЛИЙСКИЕ -->
-      <option value="Shiraz|4">Shiraz — 4</option>
-      <option value="Durif|4">Durif — 4</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Shiraz">
+        <span>Shiraz — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Durif">
+        <span>Durif — 4</span>
+      </label>
 
       <!-- ЧИЛИЙСКИЕ/АРГЕНТИНСКИЕ -->
-      <option value="Carménère|3">Carménère — 3</option>
-      <option value="País|2">País — 2</option>
-      <option value="Torrontés|2">Torrontés — 2</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Carménère">
+        <span>Carménère — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="País">
+        <span>País — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Torrontés">
+        <span>Torrontés — 2</span>
+      </label>
 
       <!-- МЕЖДУНАРОДНЫЕ ГИБРИДЫ -->
-      <option value="Regent|3">Regent — 3</option>
-      <option value="Rondo|3">Rondo — 3</option>
-      <option value="Solaris|1">Solaris — 1</option>
-      <option value="Phoenix|1">Phoenix — 1</option>
-      <option value="Bronner|1">Bronner — 1</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Regent">
+        <span>Regent — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Rondo">
+        <span>Rondo — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Solaris">
+        <span>Solaris — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Phoenix">
+        <span>Phoenix — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Bronner">
+        <span>Bronner — 1</span>
+      </label>
 
       <!-- ДЕСЕРТНЫЕ/ФОРТИФИЦИРОВАННЫЕ -->
-      <option value="Pedro Ximénez|1">Pedro Ximénez — 1</option>
-      <option value="Palomino Fino|1">Palomino Fino — 1</option>
-      <option value="Moscatel de Alejandría|1">Moscatel de Alejandría — 1</option>
-      <option value="Malvasia|2">Malvasia — 2</option>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Pedro Ximénez">
+        <span>Pedro Ximénez — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Palomino Fino">
+        <span>Palomino Fino — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="1" value="Moscatel de Alejandría">
+        <span>Moscatel de Alejandría — 1</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Malvasia">
+        <span>Malvasia — 2</span>
+      </label>
 
       <!-- ДОПОЛНИТЕЛЬНЫЕ -->
-      <option value="Marselan|3">Marselan — 3</option>
-      <option value="Petit Verdot|4">Petit Verdot — 4</option>
-      <option value="Counoise|3">Counoise — 3</option>
-      <option value="Poulsard|2">Poulsard — 2</option>
-      <option value="Trousseau|3">Trousseau — 3</option>
-    </select>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Marselan">
+        <span>Marselan — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="4" value="Petit Verdot">
+        <span>Petit Verdot — 4</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Counoise">
+        <span>Counoise — 3</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="2" value="Poulsard">
+        <span>Poulsard — 2</span>
+      </label>
+      <label class="grape-item">
+        <input type="checkbox" data-weight="3" value="Trousseau">
+        <span>Trousseau — 3</span>
+      </label>
+    </div>
+    
     <div class="tooltip">Просто кликайте по сортам для выбора нескольких вариантов</div>
+    
+    <div id="selectedGrapesBlock" class="selected-grapes-block" style="display:none;">
+      <h4>Вы выбрали:</h4>
+      <div id="selectedGrapesList"></div>
+    </div>
   </div>
 
   <!-- Цвет вина -->
@@ -733,8 +1215,6 @@
   </div>
 
   <button class="calculate-btn" onclick="calculate()">🍷 Рассчитать тяжесть вина</button>
-  
-  <button class="info-btn" onclick="showInfo()">📊 Как работает индекс тяжести?</button>
 
   <div id="result">
     <div class="result-level" id="resultLevel"></div>
@@ -854,19 +1334,6 @@
 </div>
 
 <script>
-// Все сорта для поиска
-const allGrapes = Array.from(document.getElementById('grape').options);
-
-// Функция для показа выпадающего списка на мобильных устройствах
-function showDropdown() {
-  const grapeSelect = document.getElementById('grape');
-  // На мобильных устройствах принудительно открываем список
-  if (window.innerWidth <= 768) {
-    grapeSelect.size = 8; // Устанавливаем размер для лучшего отображения
-    grapeSelect.focus();
-  }
-}
-
 // Функции для модального окна
 function showInfo() {
   document.getElementById('infoModal').style.display = 'block';
@@ -884,63 +1351,53 @@ window.onclick = function(event) {
   }
 }
 
-// Обновляем счетчик выбранных сортов
-function updateSelectedCount() {
-  const grapeSelect = document.getElementById("grape");
-  const selected = Array.from(grapeSelect.selectedOptions);
-  const countElement = document.getElementById("selectedCount");
-  const totalElement = document.getElementById("totalCount");
-  
-  countElement.textContent = `Выбрано: ${selected.length}`;
-  totalElement.textContent = `Всего: ${grapeSelect.options.length}`;
+// Фильтрация сортов
+function filterGrapes() {
+  const text = document.getElementById('grapeSearch').value.toLowerCase();
+  document.querySelectorAll('.grape-item').forEach(item => {
+    const name = item.innerText.toLowerCase();
+    item.style.display = name.includes(text) ? '' : 'none';
+  });
 }
 
-// Фильтрация сортов с улучшенной сортировкой
-function filterGrapes() {
-  const searchText = document.getElementById('searchGrape').value.toLowerCase();
-  const grapeSelect = document.getElementById('grape');
-  
-  // Очищаем текущий список
-  grapeSelect.innerHTML = '';
-  
-  // Фильтруем и сортируем варианты
-  const filteredGrapes = allGrapes.filter(grape => 
-    grape.text.toLowerCase().includes(searchText)
-  );
-  
-  // Сортируем: сначала те, у которых поисковый текст в начале названия
-  filteredGrapes.sort((a, b) => {
-    const aText = a.text.toLowerCase();
-    const bText = b.text.toLowerCase();
-    
-    const aStartsWith = aText.startsWith(searchText);
-    const bStartsWith = bText.startsWith(searchText);
-    
-    if (aStartsWith && !bStartsWith) return -1;
-    if (!aStartsWith && bStartsWith) return 1;
-    
-    // Если оба начинаются с поискового текста или оба не начинаются,
-    // сортируем по алфавиту
-    return aText.localeCompare(bText);
-  });
-  
-  filteredGrapes.forEach(grape => {
-    grapeSelect.add(grape);
-  });
-  
-  updateSelectedCount();
+// Обновление списка выбранных сортов
+function updateSelectedGrapes() {
+  const all = [...document.querySelectorAll('.grape-item input')];
+  const selected = all.filter(ch => ch.checked);
+
+  const block = document.getElementById('selectedGrapesBlock');
+  const list = document.getElementById('selectedGrapesList');
+
+  if (selected.length === 0) {
+    block.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+
+  block.style.display = 'block';
+  list.innerHTML = selected
+    .map(ch => `<span class="tag">${ch.value}</span>`)
+    .join('');
+}
+
+// Получение общего веса выбранных сортов
+function getGrapeTotalWeight() {
+  const selected = [...document.querySelectorAll('.grape-item input')]
+    .filter(ch => ch.checked)
+    .map(ch => Number(ch.dataset.weight));
+
+  return selected.reduce((a, b) => a + b, 0);
 }
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
-  const grapeSelect = document.getElementById("grape");
-  grapeSelect.addEventListener('change', updateSelectedCount);
-  updateSelectedCount();
+  document.querySelectorAll('.grape-item input').forEach(ch => {
+    ch.addEventListener('change', updateSelectedGrapes);
+  });
 });
 
 function calculate() {
-  const grapeSelect = document.getElementById("grape");
-  const selected = Array.from(grapeSelect.selectedOptions);
+  const selected = [...document.querySelectorAll('.grape-item input')].filter(ch => ch.checked);
   
   if (selected.length === 0) {
     alert("Пожалуйста, выберите хотя бы один сорт винограда!");
@@ -957,10 +1414,8 @@ function calculate() {
     return;
   }
   
-  // Базовый индекс по купажу (среднее значение)
-  let baseIndex = selected.reduce((sum, opt) => {
-    return sum + parseFloat(opt.value.split('|')[1]);
-  }, 0) / selected.length;
+  // Базовый индекс по купажу (сумма весов)
+  let baseIndex = getGrapeTotalWeight();
 
   const finalIndex = (baseIndex + parseFloat(color) + parseFloat(aging) + parseFloat(sugar) + parseFloat(alcohol)).toFixed(2);
   
